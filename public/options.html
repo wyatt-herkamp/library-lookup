@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Library Lookup Settings</title>
+    <link rel="stylesheet" href="../styles/options.scss" />
+  </head>
+  <body>
+    <div class="container">
+      <h1 id='header'>Library Lookup Settings</h1>
+      <div id='form' >
+        <div class='setting'>
+          <label for="RUST_SEARCH_CRATES">Enable Lookup on crates.io</label>
+          <input type="checkbox" id="RUST_SEARCH_CRATES" />
+        </div>
+        <div class='setting'>
+          <label class='block' for="GITHUB_TOKEN">GITHUB Token</label>
+          <input  type="text" id="GITHUB_TOKEN" />
+        </div>
+        <button id="save" >Save</button>
+      </div>
+    </div>
+
+    <script src="../src/options.ts"></script>
+  </body>
+</html>
