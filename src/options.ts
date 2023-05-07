@@ -1,24 +1,27 @@
 import '../styles/options.scss';
 import { Settings } from './settings';
-let RUST_SEARCH_CRATES = document.getElementById(
+
+const RUST_SEARCH_CRATES = document.getElementById(
   'RUST_SEARCH_CRATES'
 ) as HTMLInputElement;
-let GITHUB_TOKEN = document.getElementById('GITHUB_TOKEN') as HTMLInputElement;
+const GITHUB_TOKEN = document.getElementById(
+  'GITHUB_TOKEN'
+) as HTMLInputElement;
 function getSettings() {
   chrome.storage.sync.get(
     {
       GITHUB_TOKEN: '',
       RUST_SEARCH_CRATES: true,
     },
-    (items: any) => {
-      let settings = items as Settings;
+    (items: unknown) => {
+      const settings = items as Settings;
       RUST_SEARCH_CRATES.checked = settings.RUST_SEARCH_CRATES;
       GITHUB_TOKEN.value = settings.GITHUB_TOKEN;
     }
   );
 }
 function saveSettings() {
-  let settings: Settings = {
+  const settings: Settings = {
     GITHUB_TOKEN: GITHUB_TOKEN.value,
     RUST_SEARCH_CRATES: RUST_SEARCH_CRATES.checked,
   };

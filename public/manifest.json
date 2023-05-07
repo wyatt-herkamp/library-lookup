@@ -14,9 +14,6 @@
     "default_title": "Libraries",
     "default_popup": "popup.html"
   },
-  "background": {
-    "service_worker": "background.js"
-  },
   "permissions": [
     "webRequest",
     "tabs",
@@ -24,6 +21,9 @@
     "downloads",
     "storage"
   ],
+  "background": {
+    "service_worker": "background.js"
+  },
   "host_permissions": ["https://github.com/*"],
   "content_scripts": [
     {
@@ -33,7 +33,10 @@
       "exclude_matches": [
         "https://*/login/*"
       ],
+      "run_at": "document_idle",
+      "all_frames": false,
       "js": [
+        "popup.js",
         "requires.js",
         "vendor.js",
         "contentScript.js"

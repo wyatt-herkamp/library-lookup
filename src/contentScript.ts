@@ -4,11 +4,14 @@ import { Settings } from './settings';
 import { checkForArtifacts } from './languages/languages';
 
 console.log('Content Script Running');
-
-let repository: Repository | null = null;
-let foundLibraries: Artifact[] = [];
+chrome.runtime.onMessage.addListener(function (msg, sender, sendResponse) {
+  if (msg.from === 'popup' && msg.subject === 'getLibraries') {
+    sendResponse(foundLibraries);
+  }
+});
+const foundLibraries: Artifact[] = [];
 import '../styles/popup.scss';
-let librariesButton = document.createElement('a');
+const librariesButton = document.createElement('a');
 librariesButton.classList.add(
   'UnderlineNav-item',
   'no-wrap',
@@ -18,19 +21,17 @@ librariesButton.classList.add(
 );
 librariesButton.innerText = 'Libraries';
 librariesButton.onclick = () => {
-  // Load popup.html
-  let popup = window.open(
-    chrome.runtime.getURL('popup.html'),
-    'popup',
-    'width=400,height=400'
-  );
+  // Not Yet Implemented
 };
 function disableButton() {
-  librariesButton.onclick = () => {};
+  librariesButton.onclick = () => {
+    // Do Nothing
+  };
   librariesButton.innerText = 'No Libraries Found';
   librariesButton.style.cursor = 'not-allowed';
 }
-let settings: Settings = await getSettings();
+
+const settings: Settings = await getSettings();
 await getOrganizationAndRepository()
   .then((repository) => {
     console.log(repository);
@@ -41,6 +42,7 @@ await getOrganizationAndRepository()
     }
   })
   .then((results) => {
+    console.log(results);
     if (results != undefined) {
       results.forEach((artifact) => {
         console.log(artifact);
@@ -64,13 +66,13 @@ await getOrganizationAndRepository()
  *
  */
 async function getOrganizationAndRepository() {
-  let querySelector = document.head.querySelector(
+  const querySelector = document.head.querySelector(
     "meta[name='octolytics-dimension-repository_nwo']"
   );
   if (querySelector != null) {
-    let content = querySelector.getAttribute('content');
+    const content = querySelector.getAttribute('content');
     if (content != null) {
-      let split = content.split('/');
+      const split = content.split('/');
       console.log(split);
       return await getRepository(split[0], split[1]);
     }
@@ -80,7 +82,7 @@ async function getOrganizationAndRepository() {
 }
 
 function getRepositoryButtonDiv() {
-  let elements = document.body.querySelectorAll(
+  const elements = document.body.querySelectorAll(
     "ul[class='UnderlineNav-body list-style-none']"
   );
   if (elements.length == 1) {
@@ -93,11 +95,11 @@ function getRepositoryButtonDiv() {
     return undefined;
   }
 }
-let buttonDiv = getRepositoryButtonDiv();
+/*const buttonDiv = getRepositoryButtonDiv();
 
 if (buttonDiv) {
   buttonDiv.appendChild(librariesButton);
-}
+}*/
 
 async function getSettings() {
   return (await chrome.storage.sync.get({
