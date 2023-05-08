@@ -2,34 +2,35 @@ const webpack = require('webpack');
 const path = require('path');
 const CopyPlugin = require('copy-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-const srcDir = path.join(__dirname, '..', 'src');
+const { VueLoaderPlugin } = require('vue-loader');
 
 module.exports = {
+  context: path.resolve(__dirname, '..', './src'),
+  mode: process.env.NODE_ENV,
   entry: {
-    contentScript: path.join(srcDir, 'contentScript.ts'),
-    requires: path.join(srcDir, 'requires.ts'),
-    options: path.join(srcDir, 'options.ts'),
-    popup: path.join(srcDir, 'popup.ts'),
-    background: path.join(srcDir, 'background.ts'),
+    contentScript: './contentScript.ts',
+    requires: './requires.ts',
+    'options/index': './options/index.ts',
+    'popup/index': './popup/index.ts',
+    background: './background.ts',
   },
   output: {
     path: path.join(__dirname, '..', 'dist'),
     filename: '[name].js',
   },
-  optimization: {
-    splitChunks: {
-      name: 'vendor',
-      chunks(chunk) {
-        return chunk.name !== 'background';
-      },
-    },
-  },
   module: {
     rules: [
       {
         test: /\.ts?$/,
-        use: 'ts-loader',
+        loader: 'ts-loader',
+        options: {
+          appendTsSuffixTo: [/\.vue$/],
+        },
         exclude: /node_modules/,
+      },
+      {
+        test: /\.vue$/,
+        loader: 'vue-loader',
       },
       {
         test: /\.scss$/,
@@ -38,29 +39,52 @@ module.exports = {
     ],
   },
   resolve: {
-    extensions: ['.ts', '.tsx', '.js'],
+    extensions: ['.ts', '.tsx', '.js', '.vue'],
+    alias: {
+      '@': path.resolve(__dirname, './src'),
+      vue: '@vue/runtime-dom',
+    },
+    modules: ['node_modules'],
   },
+  target: ['web'],
+
   plugins: [
+    new webpack.DefinePlugin({
+      'process.env': {
+        APP_NAME: JSON.stringify('Library Lookup'),
+        REPO_ENV: JSON.stringify(process.env.REPO_ENV),
+      },
+      __VUE_OPTIONS_API__: 'true',
+      __VUE_PROD_DEVTOOLS__: 'false',
+    }),
+    new VueLoaderPlugin(), // for Vue3
+
     new CopyPlugin({
       patterns: [
         {
-          from: '.',
+          from: '../public',
           to: '',
-          context: 'public',
-          transform(content) {
-            return content
-              .toString()
-              .replace('.ts', '.js')
-              .replace('../src/', './')
-              .replace('../styles', './styles')
-              .replace('.scss', '.css');
+        },
+        {
+          from: './popup/index.html',
+          to: './popup/index.html',
+          transform: {
+            cache: true,
+          },
+        },
+        {
+          from: './options/index.html',
+          to: './options/index.html',
+          transform: {
+            cache: true,
           },
         },
       ],
       options: {},
     }),
+
     new MiniCssExtractPlugin({
-      filename: 'styles/[name].css',
+      filename: '[name].css',
     }),
   ],
   experiments: {

@@ -18,6 +18,7 @@ export async function checkForArtifacts(
         value.forEach((artifact) => {
           results.push({
             type: 'rust',
+            name: artifact.name,
             content: artifact,
           });
         });

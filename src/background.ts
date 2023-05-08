@@ -1,9 +1,9 @@
-import Tab = chrome.tabs.Tab;
-
 chrome.runtime.onMessage.addListener((msg, sender) => {
   // First, validate the message's structure.
   if (msg.from === 'content' && msg.subject === 'showPageAction') {
     // Enable the page-action for the requesting tab.
-    chrome.pageAction.show((sender.tab as Tab).id as number);
+    if (sender.tab != undefined && sender.tab.id != undefined) {
+      chrome.pageAction.show(sender.tab.id);
+    }
   }
 });

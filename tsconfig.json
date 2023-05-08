@@ -1,14 +1,35 @@
+
 {
   "compilerOptions": {
+    "target": "esnext",
+    "module": "esnext",
     "strict": true,
-    "module": "es2022",
-    "target": "ES2022",
+    "jsx": "preserve",
+    "moduleResolution": "node",
+    "experimentalDecorators": true,
     "esModuleInterop": true,
-    "sourceMap": false,
+    "allowSyntheticDefaultImports": true,
+    "forceConsistentCasingInFileNames": true,
+    "useDefineForClassFields": true,
+    "isolatedModules": false,
+    "skipLibCheck": true,
+    "sourceMap": true,
+    "baseUrl": ".",
+    "types": ["vite/client", "vue", "node", "jsdom","chrome"],
+    "paths": {
+      "@/*": ["src/*"]
+    },
+    "noImplicitAny": false,
     "rootDir": "src",
     "outDir": "dist/",
-    "noEmitOnError": true,
-    "typeRoots": [ "node_modules/@types" ],
-
-  }
+    "lib": ["esnext", "dom", "dom.iterable", "scripthost"]
+  },
+  "include": [
+    "src/**/*.ts",
+    "src/**/*.tsx",
+    "src/**/*.vue",
+    "tests/**/*.ts",
+    "tests/**/*.tsx"
+  ],
+  "exclude": ["node_modules"]
 }

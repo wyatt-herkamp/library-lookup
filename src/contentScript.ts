@@ -2,6 +2,7 @@ import { getRepository, Repository } from './github';
 import { Artifact } from './artifact';
 import { Settings } from './settings';
 import { checkForArtifacts } from './languages/languages';
+import { disableButton } from './githubButton';
 
 console.log('Content Script Running');
 chrome.runtime.onMessage.addListener(function (msg, sender, sendResponse) {
@@ -10,31 +11,10 @@ chrome.runtime.onMessage.addListener(function (msg, sender, sendResponse) {
   }
 });
 const foundLibraries: Artifact[] = [];
-import '../styles/popup.scss';
-const librariesButton = document.createElement('a');
-librariesButton.classList.add(
-  'UnderlineNav-item',
-  'no-wrap',
-  'js-responsive-underlinenav-item',
-  'v-item',
-  'js-selected-navigation-item'
-);
-librariesButton.innerText = 'Libraries';
-librariesButton.onclick = () => {
-  // Not Yet Implemented
-};
-function disableButton() {
-  librariesButton.onclick = () => {
-    // Do Nothing
-  };
-  librariesButton.innerText = 'No Libraries Found';
-  librariesButton.style.cursor = 'not-allowed';
-}
 
 const settings: Settings = await getSettings();
 await getOrganizationAndRepository()
   .then((repository) => {
-    console.log(repository);
     if (repository != undefined) {
       return checkForArtifacts(repository as Repository, settings);
     } else {
@@ -42,10 +22,8 @@ await getOrganizationAndRepository()
     }
   })
   .then((results) => {
-    console.log(results);
     if (results != undefined) {
       results.forEach((artifact) => {
-        console.log(artifact);
         foundLibraries.push(artifact);
       });
       if (foundLibraries.length == 0) {
@@ -59,11 +37,13 @@ await getOrganizationAndRepository()
     console.error('Most Likely due to permissions');
     console.error(reason);
   });
+
 /**
+ *  Uses https://github.com/refined-github/github-url-detection to check if the current page is a repository
+ *
  * Gets the Organization and Repository from the current page
  *
  * Pulls `octolytics-dimension-repository_nwo` meta tag from the head of the page
- *
  */
 async function getOrganizationAndRepository() {
   const querySelector = document.head.querySelector(
@@ -73,33 +53,12 @@ async function getOrganizationAndRepository() {
     const content = querySelector.getAttribute('content');
     if (content != null) {
       const split = content.split('/');
-      console.log(split);
       return await getRepository(split[0], split[1]);
     }
   } else {
-    console.log('Could not Find Owner and Repository');
+    console.debug('Could not Find Owner and Repository. ');
   }
 }
-
-function getRepositoryButtonDiv() {
-  const elements = document.body.querySelectorAll(
-    "ul[class='UnderlineNav-body list-style-none']"
-  );
-  if (elements.length == 1) {
-    return elements[0] as HTMLDivElement;
-  } else if (elements.length > 1) {
-    console.warn('Found more than one Repository Button Div');
-    return elements[0] as HTMLDivElement;
-  } else {
-    console.warn('Could not find Repository Button Div');
-    return undefined;
-  }
-}
-/*const buttonDiv = getRepositoryButtonDiv();
-
-if (buttonDiv) {
-  buttonDiv.appendChild(librariesButton);
-}*/
 
 async function getSettings() {
   return (await chrome.storage.sync.get({
