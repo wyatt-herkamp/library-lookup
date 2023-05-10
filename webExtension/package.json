@@ -1,0 +1,58 @@
+{
+  "name": "library-lookup",
+  "version": "0.1.0",
+  "description": "Library Lookup",
+  "private": true,
+  "scripts": {
+    "watch": "webpack --config webpack/webpack.dev.js --watch",
+    "build": "webpack --config webpack/webpack.prod.js",
+    "format": "prettier --write --ignore-unknown \"{config,public,src}/**/*.{html,css,js,ts,json}\""
+  },
+  "dependencies": {
+    "library-lookup-core": "file:../core",
+    "toml": "^3.0.0",
+    "vite-plugin-ejs": "^1.6.4",
+    "vue": "^3.2.47"
+  },
+  "devDependencies": {
+    "@types/chrome": "^0.0.235",
+    "@types/jsdom": "^21.1.1",
+    "@typescript-eslint/eslint-plugin": "^5.59.5",
+    "@typescript-eslint/parser": "^5.59.5",
+    "@vitejs/plugin-vue": "^4.2.1",
+    "@vitejs/plugin-vue-jsx": "^3.0.1",
+    "@vue/eslint-config-prettier": "^7.1.0",
+    "@vue/eslint-config-typescript": "^11.0.3",
+    "@vue/tsconfig": "^0.3.2",
+    "copy-webpack-plugin": "^11.0.0",
+    "css-loader": "^6.7.3",
+    "eslint": "^8.40.0",
+    "eslint-config-prettier": "^8.8.0",
+    "eslint-config-xo-react": "^0.27.0",
+    "eslint-plugin-prettier": "^4.2.1",
+    "eslint-plugin-react": "^7.32.2",
+    "eslint-plugin-react-hooks": "^4.6.0",
+    "eslint-plugin-vue": "^9.11.1",
+    "mini-css-extract-plugin": "^2.7.5",
+    "prettier": "^2.8.8",
+    "prettier-eslint": "^15.0.1",
+    "sass": "^1.62.1",
+    "sass-loader": "^13.2.2",
+    "size-plugin": "^3.0.0",
+    "style-loader": "^3.3.2",
+    "ts-loader": "^9.4.2",
+    "tsx": "^3.12.7",
+    "typed-query-selector": "^2.10.1",
+    "typescript": "^5.0.4",
+    "unplugin-vue-components": "^0.24.1",
+    "vue-loader": "^17.1.0",
+    "vue-tsc": "^1.6.4",
+    "webpack": "^5.82.0",
+    "webpack-cli": "^5.1.0",
+    "webpack-merge": "^5.8.0"
+  },
+  "engines": {
+    "node": ">= 16",
+    "npm": ">= 7"
+  }
+}

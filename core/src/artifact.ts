@@ -1,7 +1,7 @@
-import { RustArtifact } from './languages/rust';
+import { RustArtifact } from "./languages/rust";
 
 export type Artifact = {
-  type: 'rust';
+  type: "rust";
   name: string;
   content: RustArtifact;
 };

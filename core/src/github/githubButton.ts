@@ -28,6 +28,7 @@ export function disableButton() {
   librariesButton.style.cursor = 'not-allowed';
 }
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 function getRepositoryButtonDiv() {
   const elements = document.body.querySelectorAll(
     "ul[class='UnderlineNav-body list-style-none']"

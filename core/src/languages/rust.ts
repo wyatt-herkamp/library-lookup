@@ -4,10 +4,10 @@ import {
   github_headers,
   Repository,
   searchFiles,
-} from '../github';
-import { toml } from '../requires';
-import { Settings } from '../settings';
-export interface RustArtifact {
+} from "../github/githubAPI";
+import toml from "toml";
+import { Settings } from "../settings";
+interface RustArtifact {
   name: string;
   crates_io_location: string | undefined;
   doc_rs: string | undefined;
@@ -19,18 +19,15 @@ interface Crate {
 interface InnerCrate {
   version: string;
 }
-export async function searchRepository(
-  repository: Repository,
-  settings: Settings
-) {
+async function searchRepository(repository: Repository, settings: Settings) {
   let files: File[] = [];
-  console.log('Searching for Cargo.toml');
+  console.log("Searching for Cargo.toml");
 
-  if (settings.GITHUB_TOKEN != '') {
-    console.log('Using Search API');
+  if (settings.GITHUB_TOKEN != "") {
+    console.log("Using Search API");
     const searchResponse = await searchFiles(
       repository.full_name,
-      'Cargo.toml',
+      "Cargo.toml",
       settings.GITHUB_TOKEN
     );
     if (searchResponse.total_count == 0) {
@@ -50,12 +47,12 @@ export async function searchRepository(
       }
     }
   } else {
-    list_cargo_files(repository).then((value) => {
+    await list_cargo_files(repository).then((value) => {
       files = value;
     });
   }
   if (files.length == 0) {
-    console.error('No Cargo.toml files found');
+    console.error("No Cargo.toml files found");
     return [];
   } else {
     console.debug(`Found ${files.length} Cargo.toml files`);
@@ -64,22 +61,22 @@ export async function searchRepository(
 
   return get_artifacts(files, repository, settings.RUST_SEARCH_CRATES);
 }
-export async function list_cargo_files(repository: Repository) {
+async function list_cargo_files(repository: Repository) {
   const files: File[] = [];
   const possibleFiles = await getFiles(repository.full_name);
   if (possibleFiles == undefined || possibleFiles.length == 0) {
-    console.error('No files found');
+    console.error("No files found");
     return files;
   }
   for (const possibleFile of possibleFiles) {
-    if (possibleFile.name == 'Cargo.toml') {
+    if (possibleFile.name == "Cargo.toml") {
       files.push(possibleFile);
     }
   }
 
   return files;
 }
-export async function attempt_to_get_artifact(
+async function attempt_to_get_artifact(
   crate: string,
   lookup: boolean
 ): Promise<RustArtifact> {
@@ -120,14 +117,14 @@ export async function attempt_to_get_artifact(
   };
 }
 
-export async function get_artifacts(
+async function get_artifacts(
   files: File[],
   repository: Repository,
   lookup: boolean
 ): Promise<RustArtifact[]> {
   const artifacts: RustArtifact[] = [];
   console.info(
-    'You can ignore the 404 errors below. It just means that the crate is not on crates.io'
+    "You can ignore the 404 errors below. It just means that the crate is not on crates.io"
   );
   for (const file of files) {
     try {
@@ -160,3 +157,10 @@ export async function get_artifacts(
   }
   return artifacts;
 }
+
+export {
+  searchRepository,
+  type RustArtifact,
+  get_artifacts,
+  attempt_to_get_artifact,
+};

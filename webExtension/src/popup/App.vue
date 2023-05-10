@@ -1,19 +1,23 @@
 <template>
   <div id="container">
     <ul>
-      <li v-for="library in libraries" :key="library.name">
-        {{ library.name }}
-      </li>
+      <ArtifactItem
+        v-for="artifact in libraries"
+        :artifact="artifact"
+        :key="artifact.name"
+      ></ArtifactItem>
     </ul>
   </div>
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, onMounted, ref, Ref } from 'vue';
-import { Artifact } from '@/artifact';
+import { defineComponent, ref, Ref } from 'vue';
+import { Artifact } from 'library-lookup-core';
+import ArtifactItem from 'library-lookup-core/src/components/ArtifactItem.vue';
 
 export default defineComponent({
   name: 'App',
+  components: { ArtifactItem },
   setup() {
     const libraries: Ref<Artifact[]> = ref([]);
     chrome.tabs.query(

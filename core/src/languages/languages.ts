@@ -1,7 +1,8 @@
-import { getLanguages, Repository } from '../github';
-import { Settings } from '../settings';
-import { Artifact } from '../artifact';
-import { searchRepository } from './rust';
+import { getLanguages, Repository } from "../github/githubAPI";
+
+import { searchRepository } from "./rust";
+import { Settings } from "../settings";
+import { Artifact } from "../artifact";
 
 export async function checkForArtifacts(
   repository: Repository,
@@ -13,11 +14,11 @@ export async function checkForArtifacts(
     settings.GITHUB_TOKEN
   );
   for (const language of languages) {
-    if (language == 'Rust') {
+    if (language == "Rust") {
       await searchRepository(repository, settings).then((value) => {
         value.forEach((artifact) => {
           results.push({
-            type: 'rust',
+            type: "rust",
             name: artifact.name,
             content: artifact,
           });

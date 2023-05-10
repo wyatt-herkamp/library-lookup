@@ -9,7 +9,7 @@ module.exports = {
   mode: process.env.NODE_ENV,
   entry: {
     contentScript: './contentScript.ts',
-    requires: './requires.ts',
+    requires: '../node_modules/library-lookup-core/src/requires.ts',
     'options/index': './options/index.ts',
     'popup/index': './popup/index.ts',
     background: './background.ts',

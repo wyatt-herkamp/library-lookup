@@ -21,7 +21,7 @@
 
 <script lang="ts">
 import { defineComponent, ref } from 'vue';
-import { Settings } from '@/settings';
+import { Settings } from 'library-lookup-core';
 
 export default defineComponent({
   name: 'App',

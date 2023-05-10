@@ -1,8 +1,9 @@
-import { getRepository, Repository } from './github';
-import { Artifact } from './artifact';
-import { Settings } from './settings';
-import { checkForArtifacts } from './languages/languages';
-import { disableButton } from './githubButton';
+import { Artifact, Settings } from 'library-lookup-core';
+import { checkForArtifacts } from 'library-lookup-core/src/languages/languages';
+import {
+  getRepository,
+  Repository,
+} from 'library-lookup-core/src/github/githubAPI';
 
 console.log('Content Script Running');
 chrome.runtime.onMessage.addListener(function (msg, sender, sendResponse) {
@@ -18,7 +19,7 @@ await getOrganizationAndRepository()
     if (repository != undefined) {
       return checkForArtifacts(repository as Repository, settings);
     } else {
-      disableButton();
+      //disableButton();
     }
   })
   .then((results) => {
@@ -27,10 +28,10 @@ await getOrganizationAndRepository()
         foundLibraries.push(artifact);
       });
       if (foundLibraries.length == 0) {
-        disableButton();
+        //disableButton();
       }
     } else {
-      disableButton();
+      //disableButton();
     }
   })
   .catch((reason) => {

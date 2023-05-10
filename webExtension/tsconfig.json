@@ -11,7 +11,7 @@
     "allowSyntheticDefaultImports": true,
     "forceConsistentCasingInFileNames": true,
     "useDefineForClassFields": true,
-    "isolatedModules": false,
+    "isolatedModules": true,
     "skipLibCheck": true,
     "sourceMap": true,
     "baseUrl": ".",
@@ -20,7 +20,7 @@
       "@/*": ["src/*"]
     },
     "noImplicitAny": false,
-    "rootDir": "src",
+    "rootDirs": ["src","core"],
     "outDir": "dist/",
     "lib": ["esnext", "dom", "dom.iterable", "scripthost"]
   },

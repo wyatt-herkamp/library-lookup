@@ -1,0 +1,57 @@
+{
+  "name": "library-lookup-core",
+  "version": "0.1.0",
+  "description": "The Core part of Library Lookup. Containing UI Components and the API for finding libraries.",
+  "private": true,
+  "scripts": {
+    "build": "npm run build:dist && npm run build:type",
+    "build:dist": "vite build",
+    "build:type": "vue-tsc --emitDeclarationOnly"
+  },
+  "main": "./dist/library-lookup-core.umd.js",
+  "module": "./dist/library-lookup-core.mjs",
+  "exports": {
+    ".": {
+      "import": "./dist/library-lookup-core.mjs",
+      "require": "./dist/library-lookup-core.umd.js"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "types": "./dist/types/main.d.ts",
+  "dependencies": {
+    "toml": "^3.0.0",
+    "vue": "^3"
+
+  },
+  "devDependencies": {
+    "@types/chrome": "^0.0.235",
+    "@types/jsdom": "^21.1.1",
+    "eslint": "^8.40.0",
+    "eslint-config-prettier": "^8.8.0",
+    "eslint-config-xo-react": "^0.27.0",
+    "eslint-plugin-prettier": "^4.2.1",
+    "eslint-plugin-react": "^7.32.2",
+    "eslint-plugin-react-hooks": "^4.6.0",
+    "eslint-plugin-vue": "^9.11.1",
+    "mini-css-extract-plugin": "^2.7.5",
+    "prettier": "^2.8.8",
+    "prettier-eslint": "^15.0.1",
+    "typescript": "^5.0.4",
+    "vite": "^4.3.5",
+    "sass": "^1.58.3",
+    "@vitejs/plugin-vue-jsx": "^3.0.1",
+    "@vue/tsconfig": "^0.3.2",
+    "unplugin-vue-components": "^0.24.0",
+
+    "vue": "^3.2.47",
+    "vue-tsc": "^1.6.4",
+    "@vitejs/plugin-vue": "^4.2.1",
+    "@vue/compiler-sfc": "^3.2.47"
+  },
+  "engines": {
+    "node": ">= 16",
+    "npm": ">= 7"
+  }
+}
