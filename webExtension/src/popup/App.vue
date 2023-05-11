@@ -1,25 +1,20 @@
 <template>
   <div id="container">
-    <ul>
-      <ArtifactItem
-        v-for="artifact in libraries"
-        :artifact="artifact"
-        :key="artifact.name"
-      ></ArtifactItem>
-    </ul>
+    <Artifacts v-show="libraries.length != 0" :artifacts="libraries" />
   </div>
 </template>
 
 <script lang="ts">
 import { defineComponent, ref, Ref } from 'vue';
 import { Artifact } from 'library-lookup-core';
-import ArtifactItem from 'library-lookup-core/src/components/ArtifactItem.vue';
+import Artifacts from './Artifacts.vue';
 
 export default defineComponent({
   name: 'App',
-  components: { ArtifactItem },
+  components: { Artifacts },
+  created() {},
   setup() {
-    const libraries: Ref<Artifact[]> = ref([]);
+    const libraries: Ref<Array<Artifact>> = ref([]);
     chrome.tabs.query(
       {
         active: true,
@@ -32,8 +27,11 @@ export default defineComponent({
             tab.id,
             { from: 'popup', subject: 'getLibraries' },
             (response) => {
+              console.log(response);
               if (response != undefined) {
-                libraries.value = response;
+                for (const library of response) {
+                  libraries.value.push(library);
+                }
               }
             }
           );
@@ -46,8 +44,4 @@ export default defineComponent({
   },
 });
 </script>
-<style lang="scss" scoped>
-#container {
-  background-color: red;
-}
-</style>
+<style lang="scss" scoped></style>

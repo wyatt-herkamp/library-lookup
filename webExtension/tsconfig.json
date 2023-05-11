@@ -17,10 +17,10 @@
     "baseUrl": ".",
     "types": ["vite/client", "vue", "node", "jsdom","chrome"],
     "paths": {
-      "@/*": ["src/*"]
+      "@/*": ["src/*"],
     },
     "noImplicitAny": false,
-    "rootDirs": ["src","core"],
+    "rootDirs": ["src","../vue/src"],
     "outDir": "dist/",
     "lib": ["esnext", "dom", "dom.iterable", "scripthost"]
   },

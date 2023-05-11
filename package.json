@@ -1,0 +1,10 @@
+{
+  "name": "library-lookup",
+  "version": "1.0.0",
+  "scripts": {
+    "installAndBuild": "npm run installAndBuildCore ",
+    "installAndBuildCore": "cd core && npm install && npm run build"
+  },
+  "dependencies": {
+  }
+}

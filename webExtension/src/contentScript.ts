@@ -1,9 +1,5 @@
-import { Artifact, Settings } from 'library-lookup-core';
-import { checkForArtifacts } from 'library-lookup-core/src/languages/languages';
-import {
-  getRepository,
-  Repository,
-} from 'library-lookup-core/src/github/githubAPI';
+import { Artifact, checkForArtifacts, Settings } from 'library-lookup-core';
+import { GithubAPI } from 'library-lookup-core';
 
 console.log('Content Script Running');
 chrome.runtime.onMessage.addListener(function (msg, sender, sendResponse) {
@@ -17,7 +13,7 @@ const settings: Settings = await getSettings();
 await getOrganizationAndRepository()
   .then((repository) => {
     if (repository != undefined) {
-      return checkForArtifacts(repository as Repository, settings);
+      return checkForArtifacts(repository as GithubAPI.Repository, settings);
     } else {
       //disableButton();
     }
@@ -54,7 +50,7 @@ async function getOrganizationAndRepository() {
     const content = querySelector.getAttribute('content');
     if (content != null) {
       const split = content.split('/');
-      return await getRepository(split[0], split[1]);
+      return await GithubAPI.getRepository(split[0], split[1]);
     }
   } else {
     console.debug('Could not Find Owner and Repository. ');

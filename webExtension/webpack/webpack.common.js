@@ -9,7 +9,6 @@ module.exports = {
   mode: process.env.NODE_ENV,
   entry: {
     contentScript: './contentScript.ts',
-    requires: '../node_modules/library-lookup-core/src/requires.ts',
     'options/index': './options/index.ts',
     'popup/index': './popup/index.ts',
     background: './background.ts',
@@ -33,13 +32,28 @@ module.exports = {
         loader: 'vue-loader',
       },
       {
+        test: /\.css$/,
+        use: [
+          'vue-style-loader',
+          {
+            loader: 'css-loader',
+            options: {
+              // enable CSS Modules
+              modules: true,
+              // customize generated class names
+              localIdentName: '[local]_[hash:base64:8]',
+            },
+          },
+        ],
+      },
+      {
         test: /\.scss$/,
         use: [MiniCssExtractPlugin.loader, 'css-loader', 'sass-loader'],
       },
     ],
   },
   resolve: {
-    extensions: ['.ts', '.tsx', '.js', '.vue'],
+    extensions: ['.ts', '.tsx', '.js', '.vue', '.css'],
     alias: {
       '@': path.resolve(__dirname, './src'),
       vue: '@vue/runtime-dom',
